@@ -1,7 +1,9 @@
 package com.extia.easyshopper.application.dto.request;
 
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 
+@Builder
 public record RegisterRequest(
         @NotBlank(message = "The name must not be blank.")
         String name,
