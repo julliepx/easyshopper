@@ -8,12 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class RestExceptionHandler {
-
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException exception) {
         return new ResponseEntity<>(ExceptionResponse.builder()
@@ -38,6 +38,22 @@ public class RestExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException exception) {
         String message = exception.getBindingResult()
                 .getFieldErrors()
+                .stream()
+                .map(error -> error.getDefaultMessage())
+                .findFirst()
+                .orElse("Validation failed");
+
+        return new ResponseEntity<>(ExceptionResponse.builder()
+                .title(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(message)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .dateTime(LocalDateTime.now())
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ExceptionResponse> handleHandlerMethodValidation(HandlerMethodValidationException exception) {
+        String message = exception.getAllErrors()
                 .stream()
                 .map(error -> error.getDefaultMessage())
                 .findFirst()

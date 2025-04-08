@@ -21,6 +21,7 @@ public class AuthService implements IAuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
+    @Override
     public AuthResponse login(LoginRequest request) {
         User user = this.userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new NotFoundException("The user was not found."));
@@ -32,6 +33,7 @@ public class AuthService implements IAuthService {
         return new AuthResponse(user.getName(), token);
     }
 
+    @Override
     public AuthResponse register(RegisterRequest request) {
         Optional<User> user = this.userRepository.findByEmail(request.email());
 

@@ -16,10 +16,12 @@ public class AuthController implements IAuthController {
     @Autowired
     private IAuthService authService;
 
+    @Override
     public ResponseEntity<AuthResponse> login(LoginRequest request) {
         return new ResponseEntity<>(this.authService.login(request), HttpStatus.OK);
     }
 
+    @Override
     public ResponseEntity<AuthResponse> register(RegisterRequest request){
         return new ResponseEntity<>(this.authService.register(request), HttpStatus.CREATED);
     }

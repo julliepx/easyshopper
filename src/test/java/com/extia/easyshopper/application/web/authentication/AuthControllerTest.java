@@ -5,15 +5,12 @@ import com.extia.easyshopper.application.dto.request.RegisterRequest;
 import com.extia.easyshopper.stubs.IAuthStub;
 import com.extia.easyshopper.utils.BaseTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-@Sql(scripts = "/sql/INSERT_USERS.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 public class AuthControllerTest extends BaseTest {
-
     @Test
     void shouldReturn400WhenLoginWithWrongPassword() {
         LoginRequest payload = IAuthStub.buildWrongPasswordLoginRequest();
