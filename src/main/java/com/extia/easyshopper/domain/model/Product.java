@@ -18,10 +18,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private BigDecimal price;
     private Integer stock;
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
+    @Column(columnDefinition = "TEXT")
     private String imageUrl;
 }
